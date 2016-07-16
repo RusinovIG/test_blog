@@ -10,7 +10,7 @@ class Container implements \ArrayAccess
     /**
      * @var array
      */
-    private $items;
+    private $items = [];
 
     /**
      * @param string $offset
@@ -20,6 +20,7 @@ class Container implements \ArrayAccess
     {
         return isset($this->items[$offset]);
     }
+
     /**
      * @param string $offset
      * @return mixed
@@ -37,6 +38,7 @@ class Container implements \ArrayAccess
 
         return $this->items[$offset];
     }
+
     /**
      * @param string $offset
      * @param mixed $value
@@ -45,6 +47,7 @@ class Container implements \ArrayAccess
     {
         $this->items[$offset] = $value;
     }
+
     /**
      * @param string $offset
      */

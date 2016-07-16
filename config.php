@@ -7,5 +7,7 @@ $config = [
         'db_name' => '',
         'user' => '',
         'password' => ''
-    ]
+    ],
+
+    'template_dir' => __DIR__ . '/src/App/Templates',
 ];

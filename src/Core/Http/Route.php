@@ -8,9 +8,10 @@ namespace TestBlog\Core\Http;
 class Route
 {
     /**
+     * Http method
      * @var string
      */
-    private $httpMethod;
+    private $method;
 
     /**
      * @var string
@@ -20,42 +21,50 @@ class Route
     /**
      * @var string
      */
-    private $controllerName;
+    private $controller;
 
     /**
      * @var string
      */
-    private $controllerMethod;
+    private $action;
 
     /**
      * Route constructor.
-     * @param string $httpMethod
+     * @param string $method
      * @param string $pattern
-     * @param string $controllerName
-     * @param string $controllerMethod
+     * @param string $controller
+     * @param string $action
      */
-    public function __construct($httpMethod, $pattern, $controllerName, $controllerMethod)
+    public function __construct($method, $pattern, $controller, $action)
     {
-        $this->httpMethod = $httpMethod;
+        $this->method = $method;
         $this->pattern = $pattern;
-        $this->controllerName = $controllerName;
-        $this->controllerMethod = $controllerMethod;
+        $this->controller = $controller;
+        $this->action = $action;
     }
 
     /**
      * @return string
      */
-    public function controllerName()
+    public function controller()
     {
-        return $this->controllerName;
+        return $this->controller;
     }
 
     /**
      * @return string
      */
-    public function controllerMethod()
+    public function action()
     {
-        return $this->controllerMethod;
+        return $this->action;
+    }
+
+    /**
+     * @return string
+     */
+    public function method()
+    {
+        return $this->method;
     }
 
     /**
@@ -66,6 +75,20 @@ class Route
     public function matches(Request $request)
     {
         return preg_match($this->pattern, $request->uri()) &&
-            $this->httpMethod == $request->method();
+            $this->method() == $request->method();
+    }
+
+    /**
+     * Returns array of route parameters values
+     * @param Request $request
+     * @return array
+     */
+    public function getRouteParameters(Request $request)
+    {
+        if (preg_match($this->pattern, $request->uri(), $arguments)) {
+            array_shift($arguments);
+            return $arguments;
+        }
+        return [];
     }
 }

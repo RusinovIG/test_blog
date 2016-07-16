@@ -58,7 +58,7 @@ class Request
      */
     public function get($key)
     {
-        isset($this->get[$key]) ? $this->get[$key] : null;
+        return isset($this->get[$key]) ? $this->get[$key] : null;
     }
 
     /**
@@ -68,7 +68,7 @@ class Request
      */
     public function post($key)
     {
-        isset($this->post[$key]) ? $this->post[$key] : null;
+        return isset($this->post[$key]) ? $this->post[$key] : null;
     }
 
     /**
@@ -78,7 +78,7 @@ class Request
      */
     public function cookie($key)
     {
-        isset($this->cookies[$key]) ? $this->cookies[$key] : null;
+        return isset($this->cookies[$key]) ? $this->cookies[$key] : null;
     }
 
     /**
@@ -88,7 +88,7 @@ class Request
      */
     public function server($key)
     {
-        isset($this->server[$key]) ? $this->server[$key] : null;
+        return isset($this->server[$key]) ? $this->server[$key] : null;
     }
 
     /**
