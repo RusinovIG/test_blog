@@ -99,4 +99,13 @@ class Request
     {
         return $this->server('REQUEST_URI');
     }
+
+    /**
+     * Return request method
+     * @return null|string
+     */
+    public function method()
+    {
+        return $this->server('REQUEST_METHOD');
+    }
 }
