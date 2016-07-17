@@ -6,7 +6,7 @@
  * Time: 23:41
  */
 
-namespace TestBlog\Core;
+namespace TestBlog\Core\DB;
 
 /**
  * Base model class
@@ -48,5 +48,16 @@ abstract class Model
     public function id()
     {
         return $this->id;
+    }
+
+    /**
+     * Return array of model data
+     * @return array
+     */
+    public function toArray()
+    {
+        return [
+            'id' => $this->id
+        ];
     }
 }

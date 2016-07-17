@@ -25,7 +25,7 @@ $container['request_dispatcher'] = function ($c) {
 
 $container['DB'] = function ($c) {
     $dsn = 'mysql:host=' . $c['config']['db']['server_name'] . ';dbname=' . $c['config']['db']['db_name'];
-    return new \TestBlog\Core\DB($dsn, $c['config']['db']['user'], $c['config']['db']['password']);
+    return new \TestBlog\Core\DB\Driver($dsn, $c['config']['db']['user'], $c['config']['db']['password']);
 };
 
 /**

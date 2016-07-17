@@ -2,7 +2,7 @@
 
 namespace TestBlog\App\Models;
 
-use TestBlog\Core\Model;
+use TestBlog\Core\DB\Model;
 
 /**
  * Blog post
@@ -61,5 +61,19 @@ class Post extends Model
     public function createdAt()
     {
         return $this->createdAt;
+    }
+
+    /**
+     * Return array of model data
+     * @return array
+     */
+    public function toArray()
+    {
+        return [
+            'id' => $this->id,
+            'title' => $this->title,
+            'content' => $this->content,
+            'created_at' => $this->createdAt
+        ];
     }
 }
