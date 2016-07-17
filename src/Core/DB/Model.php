@@ -29,7 +29,7 @@ abstract class Model
 
     /**
      * @param array $data
-     * @return object
+     * @return static
      */
     public static function buildFromArray(array $data)
     {
@@ -37,9 +37,20 @@ abstract class Model
         $arguments = [];
         foreach ($class->getConstructor()->getParameters() as $parameter) {
             $parameterName = $parameter->getName();
-            $arguments[] = isset($data[$parameterName]) ? $data[$parameterName] : null;
+            $dataAttr = self::camelCaseToUnderscore($parameterName);
+            $arguments[] = isset($data[$dataAttr]) ? $data[$dataAttr] : null;
         }
         return $class->newInstanceArgs($arguments);
+    }
+
+    /**
+     * Convert camel case string to underscored
+     * @param string $string
+     * @return string
+     */
+    private static function camelCaseToUnderscore($string)
+    {
+        return ltrim(strtolower(preg_replace('/[A-Z]/', '_$0', $string)), '_');
     }
 
     /**

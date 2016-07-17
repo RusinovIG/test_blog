@@ -28,4 +28,19 @@ class CommentsProvider extends EntityProvider
         return Comment::class;
     }
 
+    public function getByPostId($id)
+    {
+        $dataArray = $this->dbDriver->fetchAll(
+            'SELECT * FROM ' . $this->table() . ' WHERE post_id=:post_id ORDER BY id DESC',
+            ['post_id' => $id]
+        );
+        $models = array_map(
+            function ($row) {
+                return $this->buildModelFromArray($row);
+            },
+            $dataArray
+        );
+        return $models;
+    }
+
 }

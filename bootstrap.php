@@ -31,15 +31,22 @@ $container['db_driver'] = function ($c) {
 $container['posts_provider'] = function ($c) {
     return new \TestBlog\App\Providers\PostsProvider($c['db_driver']);
 };
+$container['comments_provider'] = function ($c) {
+    return new \TestBlog\App\Providers\CommentsProvider($c['db_driver']);
+};
 
 /**
  * Controllers section
  * All application controllers should be registered here
  */
 $container[\TestBlog\App\Controllers\Homepage::class] = function ($c) {
-    return new \TestBlog\App\Controllers\Homepage($c['view_renderer']);
+    return new \TestBlog\App\Controllers\Homepage($c['view_renderer'], $c['posts_provider']);
 };
 
 $container[\TestBlog\App\Controllers\Posts::class] = function ($c) {
-    return new \TestBlog\App\Controllers\Posts($c['view_renderer'], $c['posts_provider']);
+    return new \TestBlog\App\Controllers\Posts($c['view_renderer'], $c['posts_provider'], $c['comments_provider']);
+};
+
+$container[\TestBlog\App\Controllers\Comments::class] = function ($c) {
+    return new \TestBlog\App\Controllers\Comments($c['view_renderer'], $c['comments_provider']);
 };

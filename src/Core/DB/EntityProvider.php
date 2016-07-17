@@ -45,27 +45,43 @@ abstract class EntityProvider
      */
     public function getById($id)
     {
-        $row = $this->dbDriver->fetch('SELECT * from ' . $this->table() . ' where id=?', ['id' => $id]);
+        $row = $this->dbDriver->fetch('SELECT * FROM ' . $this->table() . ' where id=:id', ['id' => (int)$id]);
         if (!$row) {
             throw new \RuntimeException('Can\'t find ' . $this->modelClass() . ' entity with id=' . $id);
         }
-        return ($this->modelClass())::buildFromArray($row);
+        return $this->buildModelFromArray($row);
     }
 
     public function getAll()
     {
-        $dataArray = $this->dbDriver->fetch_all('SELECT * from ' . $this->table() . ' ORDER BY id');
+        $dataArray = $this->dbDriver->fetchAll('SELECT * FROM ' . $this->table() . ' ORDER BY id DESC');
         $models = array_map(
             function ($row) {
-                return ($this->modelClass())::buildFromArray($row);
+                return $this->buildModelFromArray($row);
             },
             $dataArray
         );
         return $models;
     }
 
-    public function insert(Model $model)
+    /**
+     * @param Model $model
+     * @return Model
+     */
+    public function save(Model $model)
     {
-        $this->dbDriver->insert($this->table(), $model->toArray());
+        $data = $model->toArray();
+        $id = $this->dbDriver->insert($this->table(), $data);
+        $data['id'] = $id;
+        return $this->buildModelFromArray($data);
+    }
+
+    /**
+     * @param array $data
+     * @return Model
+     */
+    protected function buildModelFromArray(array $data)
+    {
+        return ($this->modelClass())::buildFromArray($data);
     }
 }

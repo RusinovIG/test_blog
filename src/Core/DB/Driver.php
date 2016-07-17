@@ -48,7 +48,7 @@ class Driver {
      * @param array $params
      * @return array
      */
-    public function fetch_all($sql, array $params = [])
+    public function fetchAll($sql, array $params = [])
     {
         $statement = $this->execute($sql, $params);
         return $statement->fetchALL(\PDO::FETCH_ASSOC);

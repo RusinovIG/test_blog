@@ -1,13 +1,9 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: garun
- * Date: 17.07.16
- * Time: 21:36
- */
 
 namespace TestBlog\App\Controllers;
 
+use TestBlog\App\Models\Post;
+use TestBlog\App\Providers\CommentsProvider;
 use TestBlog\App\Providers\PostsProvider;
 use TestBlog\Core\Http\Controller;
 use TestBlog\Core\Http\Request;
@@ -21,16 +17,34 @@ class Posts extends Controller
     private $postsProvider;
 
     /**
+     * @var CommentsProvider
+     */
+    private $commentsProvider;
+
+    /**
      * Posts constructor.
      * @param IViewRenderer $viewRenderer
      * @param PostsProvider $postsProvider
+     * @param CommentsProvider $commentsProvider
      */
     public function __construct(
         IViewRenderer $viewRenderer,
-        PostsProvider $postsProvider
+        PostsProvider $postsProvider,
+        CommentsProvider $commentsProvider
     ) {
         parent::__construct($viewRenderer);
         $this->postsProvider = $postsProvider;
+        $this->commentsProvider = $commentsProvider;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function show($id)
+    {
+        $post = $this->postsProvider->getById($id);
+        $comments = $this->commentsProvider->getByPostId($post->id());
+        $this->view('posts/show', compact('post', 'comments'));
     }
 
     /**
@@ -47,7 +61,12 @@ class Posts extends Controller
      */
     public function save(Request $request)
     {
-        // Save post
+        $post = Post::buildFromArray([
+            'title' => $request->post('title'),
+            'content' => $request->post('content'),
+            'created_at' => date('Y-m-d H:i:s')
+        ]);
+        $this->postsProvider->save($post);
         $this->redirect('/');
     }
 }

@@ -10,6 +10,11 @@ use TestBlog\Core\DB\Model;
 class Comment extends Model
 {
     /**
+     * @var int
+     */
+    private $postId;
+
+    /**
      * @var string
      */
     private $text;
@@ -25,11 +30,36 @@ class Comment extends Model
      * @param string $text
      * @param string $createdAt
      */
-    public function __construct($id, $text, $createdAt)
+    public function __construct($id, $postId, $text, $createdAt)
     {
         parent::__construct($id);
+        $this->postId = $postId;
         $this->text = $text;
         $this->createdAt = $createdAt;
+    }
+
+    /**
+     * @return int
+     */
+    public function postId()
+    {
+        return $this->postId;
+    }
+
+    /**
+     * @return string
+     */
+    public function text()
+    {
+        return $this->text;
+    }
+
+    /**
+     * @return string
+     */
+    public function createdAt()
+    {
+        return $this->createdAt;
     }
 
     /**
@@ -40,6 +70,7 @@ class Comment extends Model
     {
         return [
             'id' => $this->id,
+            'post_id' => $this->postId,
             'text' => $this->text,
             'created_at' => $this->createdAt
         ];
