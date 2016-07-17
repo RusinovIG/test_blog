@@ -15,14 +15,11 @@ class Driver {
      * @param $dsn
      * @param $userName
      * @param $password
+     * @throws \PDOException
      */
     public function __construct($dsn, $userName, $password)
     {
-        try {
-            $this->pdo = new \PDO($dsn, $userName, $password);
-        } catch (\PDOException $e) {
-            die($e->getMessage());
-        }
+        $this->pdo = new \PDO($dsn, $userName, $password);
     }
 
     /**
@@ -80,7 +77,7 @@ class Driver {
      * @param array $params
      * @return \PDOStatement
      */
-    private function execute($sql, array $params = [])
+    public function execute($sql, array $params = [])
     {
         $statement = $this->pdo->prepare($sql);
         $statement->execute($params);

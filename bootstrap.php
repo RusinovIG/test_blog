@@ -23,9 +23,13 @@ $container['request_dispatcher'] = function ($c) {
     return new \TestBlog\Core\Http\RequestDispatcher($c, $c['router']);
 };
 
-$container['DB'] = function ($c) {
+$container['db_driver'] = function ($c) {
     $dsn = 'mysql:host=' . $c['config']['db']['server_name'] . ';dbname=' . $c['config']['db']['db_name'];
     return new \TestBlog\Core\DB\Driver($dsn, $c['config']['db']['user'], $c['config']['db']['password']);
+};
+
+$container['posts_provider'] = function ($c) {
+    return new \TestBlog\App\Providers\PostsProvider($c['db_driver']);
 };
 
 /**
@@ -34,4 +38,8 @@ $container['DB'] = function ($c) {
  */
 $container[\TestBlog\App\Controllers\Homepage::class] = function ($c) {
     return new \TestBlog\App\Controllers\Homepage($c['view_renderer']);
+};
+
+$container[\TestBlog\App\Controllers\Posts::class] = function ($c) {
+    return new \TestBlog\App\Controllers\Posts($c['view_renderer'], $c['posts_provider']);
 };

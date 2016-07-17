@@ -101,6 +101,15 @@ class Request
     }
 
     /**
+     * Return http referer
+     * @return null|string
+     */
+    public function referer()
+    {
+        return $this->server('HTTP_REFERER');
+    }
+
+    /**
      * Return request method
      * @return null|string
      */

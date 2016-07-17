@@ -19,6 +19,15 @@ abstract class EntityProvider
     protected $dbDriver;
 
     /**
+     * EntityProvider constructor.
+     * @param Driver $dbDriver
+     */
+    public function __construct(Driver $dbDriver)
+    {
+        $this->dbDriver = $dbDriver;
+    }
+
+    /**
      * Return current model table
      * @return string
      */

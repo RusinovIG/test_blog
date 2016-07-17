@@ -29,6 +29,7 @@ class RequestDispatcher
 
         $action = $route->action();
         $arguments = $route->getRouteParameters($request);
+        $arguments[] = $request;
         $this->runControllerAction($controller, $action, $arguments);
     }
 
