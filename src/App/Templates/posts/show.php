@@ -1,5 +1,6 @@
 <?php require __DIR__ . '/../_common/header.php'?>
 
+<p><a href="/">To home page</a></p>
 <h1><?= $post->title() ?></h1>
 <p>Created: <?= $post->createdAt() ?></p>
 <p><?= $post->content() ?></p>

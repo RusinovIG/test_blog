@@ -15,12 +15,18 @@ abstract class Controller
     private $viewRenderer;
 
     /**
+     * @var IAuth
+     */
+    protected $authService;
+
+    /**
      * Controller constructor.
      * @param IViewRenderer $viewRenderer
      */
-    public function __construct(IViewRenderer $viewRenderer)
+    public function __construct(IViewRenderer $viewRenderer, IAuth $authService)
     {
         $this->viewRenderer = $viewRenderer;
+        $this->authService = $authService;
     }
 
     /**

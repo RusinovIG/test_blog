@@ -6,6 +6,7 @@ use TestBlog\App\Models\Post;
 use TestBlog\App\Providers\CommentsProvider;
 use TestBlog\App\Providers\PostsProvider;
 use TestBlog\Core\Http\Controller;
+use TestBlog\Core\Http\IAuth;
 use TestBlog\Core\Http\Request;
 use TestBlog\Core\View\IViewRenderer;
 
@@ -24,15 +25,17 @@ class Posts extends Controller
     /**
      * Posts constructor.
      * @param IViewRenderer $viewRenderer
+     * @param IAuth $authService
      * @param PostsProvider $postsProvider
      * @param CommentsProvider $commentsProvider
      */
     public function __construct(
         IViewRenderer $viewRenderer,
+        IAuth $authService,
         PostsProvider $postsProvider,
         CommentsProvider $commentsProvider
     ) {
-        parent::__construct($viewRenderer);
+        parent::__construct($viewRenderer, $authService);
         $this->postsProvider = $postsProvider;
         $this->commentsProvider = $commentsProvider;
     }
@@ -52,7 +55,8 @@ class Posts extends Controller
      */
     public function add()
     {
-        $this->view('posts/add');
+        $isLoggedIn = $this->authService->isLoggedIn();
+        $this->view('posts/add', compact('isLoggedIn'));
     }
 
     /**
@@ -61,6 +65,10 @@ class Posts extends Controller
      */
     public function save(Request $request)
     {
+        if (!$this->authService->isLoggedIn()) {
+            $this->redirect('/');
+            return;
+        }
         $post = Post::buildFromArray([
             'title' => $request->post('title'),
             'content' => $request->post('content'),

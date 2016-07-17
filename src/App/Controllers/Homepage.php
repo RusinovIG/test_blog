@@ -4,6 +4,7 @@ namespace TestBlog\App\Controllers;
 
 use TestBlog\App\Providers\PostsProvider;
 use TestBlog\Core\Http\Controller;
+use TestBlog\Core\Http\IAuth;
 use TestBlog\Core\View\IViewRenderer;
 
 /**
@@ -19,11 +20,12 @@ class Homepage extends Controller
     /**
      * Homepage constructor.
      * @param IViewRenderer $viewRenderer
+     * @param IAuth $authService
      * @param PostsProvider $commentsProvider
      */
-    public function __construct(IViewRenderer $viewRenderer, PostsProvider $commentsProvider)
+    public function __construct(IViewRenderer $viewRenderer, IAuth $authService, PostsProvider $commentsProvider)
     {
-        parent::__construct($viewRenderer);
+        parent::__construct($viewRenderer, $authService);
         $this->postsProvider = $commentsProvider;
     }
 
@@ -33,6 +35,7 @@ class Homepage extends Controller
     public function index()
     {
         $posts = $this->postsProvider->getAll();
-        $this->view('index', compact('posts'));
+        $isLoggedIn = $this->authService->isLoggedIn();
+        $this->view('index', compact('posts', 'isLoggedIn'));
     }
 }

@@ -5,6 +5,7 @@ namespace TestBlog\App\Controllers;
 use TestBlog\App\Models\Comment;
 use TestBlog\App\Providers\CommentsProvider;
 use TestBlog\Core\Http\Controller;
+use TestBlog\Core\Http\IAuth;
 use TestBlog\Core\Http\Request;
 use TestBlog\Core\View\IViewRenderer;
 
@@ -18,13 +19,15 @@ class Comments extends Controller
     /**
      * Posts constructor.
      * @param IViewRenderer $viewRenderer
+     * @param IAuth $authService
      * @param CommentsProvider $commentsProvider
      */
     public function __construct(
         IViewRenderer $viewRenderer,
+        IAuth $authService,
         CommentsProvider $commentsProvider
     ) {
-        parent::__construct($viewRenderer);
+        parent::__construct($viewRenderer, $authService);
         $this->commentsProvider = $commentsProvider;
     }
 
